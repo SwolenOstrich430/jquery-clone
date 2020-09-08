@@ -150,7 +150,6 @@ test("removeAttr: remove attribute specified as first arg", function() {
     jqueryElem.setAttr("align", "center");
     expect(jqueryElem.getAttr("align")).toBe("center");
     jqueryElem.removeAttr("align");
-    console.log(jqueryElem.getAttr("align").length);
     expect(jqueryElem.getAttr("align").length).toBe(0);
 })
 
@@ -170,6 +169,25 @@ test("children: get all children of given element when no children present retur
     expect(jqueryElem.children()[0]).toBe(newElem);
 });
 
-test("addClass: add class given as argument to className on element", function() {
+test("addClass: add class given as argument to className on element with no current classes set", function() {
     const jqueryElem = new $(getNewElem("div"));
-})
+    jqueryElem.addClass("newClass");
+    expect(jqueryElem.getClass()).toBe("newClass");
+});
+
+test("addClass: add class given as argument to className on element with current classes set", function() {
+    const jqueryElem = new $(getNewElem("div"));
+    jqueryElem.addClass("newClass");
+    jqueryElem.addClass("otherNewClass");
+    expect(jqueryElem.getClass()).toBe("newClass otherNewClass");
+});
+
+test("addClass: throw error when class name starts with number", function() {
+    const jqueryElem = new $(getNewElem("div"));
+    expect(() => jqueryElem.addClass("234sfhafaskfahksdf")).toThrowError();
+});
+
+test("addClass: throw error when space exists in className", function() {
+    const jqueryElem = new $(getNewElem("div"));
+    expect(() => jqueryElem.addClass("adfafd adsfads")).toThrowError();
+});

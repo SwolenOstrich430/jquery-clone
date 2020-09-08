@@ -1,5 +1,6 @@
 class JQuery {
     private element: HTMLElement;
+    private CLASS_NAME_REGEX: RegExp = RegExp("^[a-zA-Z_-][a-zA-Z\d_-]*$");
 
     static fromIdentifier(identifier: string): JQuery | undefined {
         let element: HTMLElement | null = document.querySelector(identifier);
@@ -83,6 +84,20 @@ class JQuery {
 
     children(): HTMLCollection {
         return this.element.children;
+    }
+
+    addClass(newClass: string): void {
+        if(!this.CLASS_NAME_REGEX.test(newClass)) {
+            throw new Error(`Invalid characters in class name: '${newClass}'`);
+        }
+
+        newClass = this.element.className.length > 0 ? ` ${newClass}` : newClass;
+        let newClassNames = this.element.className + newClass;
+        this.element.className = newClassNames;
+    }
+
+    getClass(): string {
+        return this.element.className;
     }
 }
 
