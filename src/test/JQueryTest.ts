@@ -191,3 +191,13 @@ test("addClass: throw error when space exists in className", function() {
     const jqueryElem = new $(getNewElem("div"));
     expect(() => jqueryElem.addClass("adfafd adsfads")).toThrowError();
 });
+
+test("removeClass: remove class specified in arg from class name", function() {
+    const jqueryElem = new $(getNewElem("div"));
+    jqueryElem.addClass("newClass");
+    jqueryElem.addClass("otherClass");
+    jqueryElem.addClass("thirdClass");
+    expect(jqueryElem.getClass()).toEqual("newClass otherClass thirdClass");
+    jqueryElem.removeClass("thirdClass");
+    expect(jqueryElem.getClass()).toEqual("newClass otherClass");
+});

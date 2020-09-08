@@ -1,3 +1,5 @@
+import { start } from "repl";
+
 class JQuery {
     private element: HTMLElement;
     private CLASS_NAME_REGEX: RegExp = RegExp("^[a-zA-Z_-][a-zA-Z\d_-]*$");
@@ -92,12 +94,29 @@ class JQuery {
         }
 
         newClass = this.element.className.length > 0 ? ` ${newClass}` : newClass;
-        let newClassNames = this.element.className + newClass;
-        this.element.className = newClassNames;
+        let newClassName = this.element.className + newClass;
+        this.element.className = newClassName;
     }
 
     getClass(): string {
         return this.element.className;
+    }
+
+    removeClass(classToRemove: string): void {
+        let startIndex = this.element.className.indexOf(classToRemove);
+        let endIndex = startIndex + classToRemove.length;
+        let oldClassName = this.element.className;
+        
+        if(startIndex < 0) return;
+
+        if(endIndex !== oldClassName.length) {
+            endIndex++;
+        } else {
+            startIndex--;
+        }
+        
+        let newClassNames = oldClassName.slice(0, startIndex) + oldClassName.slice(endIndex, oldClassName.length);
+        this.element.className = newClassNames;
     }
 }
 
