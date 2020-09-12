@@ -1,5 +1,3 @@
-import { start } from "repl";
-
 class JQuery {
     private elements: Array<HTMLElement>;
     private CLASS_NAME_REGEX: RegExp = RegExp("^[a-zA-Z_-][a-zA-Z\d_-]*$");
@@ -37,25 +35,30 @@ class JQuery {
     getElements(): Array<HTMLElement> {
         return this.elements;
     }
-//     getCssProperty(propertyName: any): string {
-//         const elemStyle: CSSStyleDeclaration = this.element.style; 
-//         return elemStyle.getPropertyValue(propertyName);
-//     }
 
-//     setCssProperty(propertyName: any, value: string): void {
-//         let currInlineStyle: CSSStyleDeclaration = this.element.style;
-//         currInlineStyle.setProperty(propertyName, value);
-//     }
+    getElement(index: number = 0): HTMLElement {
+        return this.elements[index];
+    }
 
-//     setCssProperties(propertiesAsObject: {[key: string]: string}): void {
-//         for(const key in propertiesAsObject) {
-//             this.setCssProperty(key, propertiesAsObject[key]);
-//         }
-//     }
+    getCssProperty(propertyName: any, index: number = 0): string {
+        const elemStyle: CSSStyleDeclaration = this.elements[index].style; 
+        return elemStyle.getPropertyValue(propertyName);
+    }
 
-//     setText(newText: string): void {
-//         this.element.textContent = newText;
-//     }
+    setCssProperty(propertyName: any, value: string, index: number = 0): void {
+        let currInlineStyle: CSSStyleDeclaration = this.elements[index].style;
+        currInlineStyle.setProperty(propertyName, value);
+    }
+
+    setCssProperties(propertiesAsObject: {[key: string]: string}, index: number = 0): void {
+        for(const key in propertiesAsObject) {
+            this.setCssProperty(key, propertiesAsObject[key], index);
+        }
+    }
+
+    setText(newText: string, index: number = 0): void {
+        this.elements[index].textContent = newText;
+    }
 
     getText(index: number = 0): string {
         const textContent = this.elements[index].textContent;
@@ -63,81 +66,86 @@ class JQuery {
         return "";
     }
 
-//     getAttr(attribute: string): string {
-//         let attributeValue: string | null = this.element.getAttribute(attribute);
-//         if(attributeValue === null) return "";
-//         return attributeValue;
-//     }
+    getAttr(attribute: string, index: number = 0): string {
+        let attributeValue: string | null = this.elements[index].getAttribute(attribute);
+        if(attributeValue === null) return "";
+        return attributeValue;
+    }
 
-//     setAttr(attribute: string, value: string): void {
-//         this.element.setAttribute(attribute, value);
-//     }
+    setAttr(attribute: string, value: string, index: number = 0): void {
+        this.elements[index].setAttribute(attribute, value);
+    }
 
-//     removeAttr(attribute: string): void {
-//         this.element.removeAttribute(attribute);
-//     }
+    removeAttr(attribute: string, index: number = 0): void {
+        this.elements[index].removeAttribute(attribute);
+    }
 
-//     getHtml(): string {
-//         return this.element.innerHTML;
-//     }
+    getHtml(index: number = 0): string {
+        return this.elements[index].innerHTML;
+    }
    
-//     click(callback: Function): void {
-//         this.element.addEventListener("click", (event: MouseEvent) => {
-//             callback();
-//         })
-//     }
+    click(callback: Function): void {
+        for(const element of this.elements) {
+            element.addEventListener("click", (event: MouseEvent) => {
+                callback(event);
+            });
+        }
+    }
 
-//     blur(callback: Function): void {
-//         this.element.addEventListener("blur", () => {
-//             callback();
-//         });
-//     }
+    blur(callback: Function): void {
+        for(const element of this.elements) {
+            element.addEventListener("blur", () => {
+                callback();
+            });
+        }
+    }
 
-//     focus(callback: Function): void {
-//         this.element.addEventListener("focus", () => {
-//             callback();
-//         })
-//     }
+    focus(callback: Function): void {
+        for(const element of this.elements) {
+            element.addEventListener("focus", () => {
+                callback();
+            });
+        }
+    }
 
-//     addChild(newChildElement: HTMLElement): void {
-//         this.element.appendChild(newChildElement);
-//     }
+    addChild(newChildElement: HTMLElement, index: number = 0): void {
+        this.elements[index].appendChild(newChildElement);
+    }
 
-//     children(): HTMLCollection {
-//         return this.element.children;
-//     }
+    children(index: number = 0): HTMLCollection {
+        return this.elements[index].children;
+    }
 
-//     addClass(newClass: string): void {
-//         if(!this.CLASS_NAME_REGEX.test(newClass)) {
-//             throw new Error(`Invalid characters in class name: '${newClass}'`);
-//         }
+    addClass(newClass: string, index: number = 0): void {
+        if(!this.CLASS_NAME_REGEX.test(newClass)) {
+            throw new Error(`Invalid characters in class name: '${newClass}'`);
+        }
 
-//         newClass = this.element.className.length > 0 ? ` ${newClass}` : newClass;
-//         let newClassName = this.element.className + newClass;
-//         this.element.className = newClassName;
-//     }
+        newClass = this.elements[index].className.length > 0 ? ` ${newClass}` : newClass;
+        let newClassName = this.elements[index].className + newClass;
+        this.elements[index].className = newClassName;
+    }
 
-//     getClass(): string {
-//         return this.element.className;
-//     }
+    getClass(index: number = 0): string {
+        return this.elements[index].className;
+    }
 
-//     removeClass(classToRemove: string): void {
-//         let startIndex = this.element.className.indexOf(classToRemove);
-//         let endIndex = startIndex + classToRemove.length;
-//         let oldClassName = this.element.className;
+    removeClass(classToRemove: string, index: number = 0): void {
+        let startIndex = this.elements[index].className.indexOf(classToRemove);
+        let endIndex = startIndex + classToRemove.length;
+        let oldClassName = this.elements[index].className;
         
-//         if(startIndex < 0) return;
+        if(startIndex < 0) return;
 
-//         if(endIndex !== oldClassName.length) {
-//             endIndex++;
-//         } else {
-//             startIndex--;
-//         }
+        if(endIndex !== oldClassName.length) {
+            endIndex++;
+        } else {
+            startIndex--;
+        }
         
-//         let newClassNames = oldClassName.slice(0, startIndex) + oldClassName.slice(endIndex, oldClassName.length);
-//         this.element.className = newClassNames;
-//     }
-// }
+        let newClassNames = oldClassName.slice(0, startIndex) + oldClassName.slice(endIndex, oldClassName.length);
+        this.elements[index].className = newClassNames;
+    }
 
 }
 
